@@ -1,4 +1,4 @@
-LDLIBS = -lncurses -lm
+LDLIBS = -lncursesw -lm
 all: 	scram
 
 clean:
