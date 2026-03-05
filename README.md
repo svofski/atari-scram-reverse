@@ -14,6 +14,6 @@ make
 # Running
 
 ```
-./scram
+./scram 2>/dev/null
 ```
 Controls: arrow keys, pgup, pgdn.
