@@ -16,3 +16,4 @@ make
 ```
 ./scram
 ```
+Controls: arrow keys, pgup, pgdn.
