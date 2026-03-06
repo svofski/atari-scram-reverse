@@ -1,3 +1,4 @@
+CFLAGS = -Wall -Werror
 LDLIBS = -lncursesw -lm
 all: 	scram
 

@@ -290,7 +290,7 @@ uint8_t __attribute__((weak)) strig(uint8_t n)
 
 float rnd(int n)
 {
-    return 1/33; // defo random
+    return 1.0f/33.0f; // defo random
 }
 
 void __attribute__((weak)) poll_input()
@@ -802,6 +802,7 @@ void sim_init()
     sim = sim_defaults;
 
     uint8_t a = usr(512, 4320);
+    (void)a;
 
     reactor = reactor_defaults;
     reactor.TR = 656; // originally CURSY, which was previously set to 656
@@ -919,7 +920,7 @@ void sim_process_1()
     }
 
     // L170
-    reactor.VP = reactor.VP - reactor.PP * ( 0.0001 * (devset[DEV_PRESSURIZER_VALVE] + devset[DEV_HPI_VALVE] / 5 ) + reactor.BS ) + 2 * reactor.IP;
+    reactor.VP = reactor.VP - reactor.PP * ( 0.0001 * (devset[DEV_PRESSURIZER_VALVE] + devset[DEV_HPI_VALVE] / 5.0f ) + reactor.BS ) + 2 * reactor.IP;
     if (reactor.VP < TINY) {
         reactor.VP = TINY;
     }
@@ -935,17 +936,17 @@ void sim_process_1()
         oldtemp[i] = temp[i];
     }
     reactor.TCRIT = 212 + 33.8 * pow(reactor.PP, 0.33333);
-    temp[TEMPS_RCS_HOTLEG] = reactor.TP + (reactor.TR - reactor.TP) / (3 + devset[DEV_RCS_PUMPS] / 4);    // hot leg
+    temp[TEMPS_RCS_HOTLEG] = reactor.TP + (reactor.TR - reactor.TP) / (3 + devset[DEV_RCS_PUMPS] / 4.0f);    // hot leg
     // L190
-    temp[TEMPS_RCS_COLDLEG] = reactor.TP - (reactor.TP - reactor.TS) / (1.5 + devset[DEV_RCS_PUMPS] / 4); // cold leg
-    temp[TEMPS_FW_COLD] = reactor.TS - (reactor.TS - reactor.TC) / (6 + devset[DEV_MAIN_FEEDWATER_PUMPS] / 2); // feedwater cold
+    temp[TEMPS_RCS_COLDLEG] = reactor.TP - (reactor.TP - reactor.TS) / (1.5 + devset[DEV_RCS_PUMPS] / 4.0f); // cold leg
+    temp[TEMPS_FW_COLD] = reactor.TS - (reactor.TS - reactor.TC) / (6 + devset[DEV_MAIN_FEEDWATER_PUMPS] / 2.0f); // feedwater cold
     // L195
     temp[TEMPS_FW_HOT] = temp[TEMPS_RCS_HOTLEG] - devset[DEV_MAIN_FEEDWATER_PUMPS] * ( temp[TEMPS_RCS_HOTLEG] - reactor.TS ) / 16; // feedwater hot
 
     //X check_input();
 
     temp[TEMPS_CS_HOT] = reactor.TC; // circulating system hot
-    temp[TEMPS_CS_COLD] = reactor.TC - (reactor.TC - 50 ) / ( 1.3 + devset[DEV_CS_PUMPS] / 9 ); // circulating system cold
+    temp[TEMPS_CS_COLD] = reactor.TC - (reactor.TC - 50 ) / ( 1.3 + devset[DEV_CS_PUMPS] / 9.0f ); // circulating system cold
 
     // L196
     temp[TEMPS_REACTOR] = reactor.TR;
@@ -1019,7 +1020,7 @@ void draw_temps()
             transparant = trn_steam_voiding;
             //setcursorx(15);
             //setcursory(0);
-            if (i & 1 == 0) {
+            if ((i & 1) == 0) {
                 sound(1, 200, 10, 6);
                 //print("STEAM VOIDING!");
             }
@@ -1209,7 +1210,7 @@ void sim_process_3()
             color(3);
             plot(51, y);        // -- void in the borated water tank (hpi)
             drawto(64, y);
-            if (y = 77) {
+            if (y == 77) {
                 enable_animation_hpi_valve(0);
             }
         }	
@@ -1252,7 +1253,7 @@ void sim_process_3()
         reactor.S6 = TINY;
     }
     // L450
-    reactor.S3 = 3.08 * devset[DEV_MAIN_FEEDWATER_PUMPS] + reactor.S6 - devset[DEV_AUX_FEEDWATER_VALVE] / 2;
+    reactor.S3 = 3.08 * devset[DEV_MAIN_FEEDWATER_PUMPS] + reactor.S6 - devset[DEV_AUX_FEEDWATER_VALVE] / 2.0f;
     if (reactor.S3 < TINY) {
         reactor.S3 = TINY;
     }
